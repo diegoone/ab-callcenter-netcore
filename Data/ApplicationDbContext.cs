@@ -17,6 +17,7 @@ namespace supervisor_agente.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Actividad>().HasKey(a => new { a.asuntoId, a.correlativo });
             
         }
