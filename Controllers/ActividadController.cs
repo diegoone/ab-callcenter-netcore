@@ -21,7 +21,7 @@ namespace supervisor_agente.Controllers
         // GET: Actividad
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Actividades.Include(a => a.asunto).Include(a => a.usuarioApp);
+            var applicationDbContext = _context.Actividades.Include(a => a.asunto);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -58,7 +58,8 @@ namespace supervisor_agente.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("fecha,correlativo,duracion,asuntoId,usuarioAppId")] Actividad actividad)
+        public async Task<IActionResult> Create([Bind("fecha,correlativo,duracion,asuntoId,usuarioAppId")] Actividad actividad, 
+        [Bind("motivo,tipo,estaResuelto")] Asunto Asunto)
         {
             if (ModelState.IsValid)
             {

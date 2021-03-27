@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Lista de Actividades</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Nueva Actividad</a>
 </p>
 <table class="table">
     <thead>
@@ -16,14 +16,21 @@
                 @Html.DisplayNameFor(model => model.fecha)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.correlativo)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.duracion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.asunto)
+                @Html.DisplayNameFor(model => model.asunto.id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.usuarioApp)
+                @Html.DisplayNameFor(model => model.asunto.estaResuelto)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.asunto.tipo)
+            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -34,13 +41,19 @@
                 @Html.DisplayFor(modelItem => item.fecha)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.correlativo)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.duracion)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.asunto.id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.usuarioApp.Id)
+                @Html.DisplayFor(modelItem => item.asunto.estaResuelto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.asunto.tipo)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
