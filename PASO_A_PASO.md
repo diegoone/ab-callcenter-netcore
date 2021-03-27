@@ -19,3 +19,7 @@
 - dotnet ef migrations add NOMBRE_MIGRACION
 ### quitar
 - dotnet ef migrations add NOMBRE_MIGRACION
+
+## hacer scaffold a un modelo
+- dotnet aspnet-codegenerator controller -name ActividadController -m Actividad -dc ApplicationDbContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
+- dotnet aspnet-codegenerator controller -name AsuntoController -m Asunto -dc ApplicationDbContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
