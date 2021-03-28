@@ -60,19 +60,37 @@ namespace supervisor_agente.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
         [Bind("fecha,correlativo,duracion,asuntoId,usuarioAppId,asunto.id,asunto.motivo,asunto.tipo,asunto.estaResuelto")] Actividad actividad, 
-        [Bind("motivo,tipo,estaResuelto")] Asunto Asunto)
+        [Bind("motivo,tipo,estaResuelto")] Asunto asunto)
         {
             if (ModelState.IsValid)
             {
                 var transaction = _context.Database.BeginTransaction();
                 try {
-                    _context.Add(actividad);
+                    //ha proporcionado asuntoId por tanto simplemente registrar
+                    if(actividad.asuntoId > 0) {
+                        Asunto asuntoLocal = await _context.Asuntos.Where( asu => asu.id == actividad.asuntoId)
+                        .FirstOrDefaultAsync();
+                        if(asuntoLocal == null) {
+                            throw new Exception("Asunto no encontrado");
+                        }
+                        //solo puede cambiar el motivo y puede marcarlo como resuelto
+                        asuntoLocal.motivo = asunto.motivo;
+                        asuntoLocal.estaResuelto = asunto.estaResuelto;
+                        _context.Update(asuntoLocal);
+                        _context.Add(actividad);
+                    } else {
+                        _context.Add(asunto);
+                        await _context.SaveChangesAsync();
+                        actividad.asuntoId = asunto.id;
+                        _context.Add(actividad);
+                    }
                     await _context.SaveChangesAsync();
                     transaction.Commit();
                     return RedirectToAction(nameof(Index));
                 }catch(Exception e) {
                     transaction.Rollback();
-                    return BadRequest();
+                    ViewData["Error"] = e.Message;
+                    return View();
                 }
                 
             }
