@@ -3,6 +3,7 @@
         @if(Model.asunto == null) {
             <h2 class="h4 text-center">Nuevo asunto</h2>
         } else {
+            @Model.asunto.motivo
             <h2 class="h4 text-center">Asunto existente</h2>
         }
 </div>

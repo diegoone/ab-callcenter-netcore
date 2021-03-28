@@ -13,8 +13,8 @@
             <div class="row mb">
                 <label class="control-label bg-white col-md-4 text-right">Buscar</label>
                 <div class="col-md-4">
-                    <input id="asuntoId" asp-for="asuntoId" type="text" placeholder="Id Asunto" class="form-control" />
-                    <span asp-validation-for="asuntoId" class="text-danger"></span>
+                    <input id="asuntoId" asp-for="asunto.id" type="text" placeholder="Id Asunto" class="form-control" data-val=false/>
+                    <span asp-validation-for="asunto.id" class="text-danger"></span>
                 </div>
                 <div class="col-md-4">
                     <button type="button" id="btn-buscar-asunto" class="btn btn-default">Buscar</button>

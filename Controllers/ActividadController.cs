@@ -67,8 +67,9 @@ namespace supervisor_agente.Controllers
                 var transaction = _context.Database.BeginTransaction();
                 try {
                     //ha proporcionado asuntoId por tanto simplemente registrar
-                    if(actividad.asuntoId > 0) {
-                        Asunto asuntoLocal = await _context.Asuntos.Where( asu => asu.id == actividad.asuntoId)
+                    if(asunto.id > 0) {
+                        actividad.asuntoId = asunto.id;
+                        Asunto asuntoLocal = await _context.Asuntos.Where( asu => asu.id == asunto.id)
                         .FirstOrDefaultAsync();
                         if(asuntoLocal == null) {
                             throw new Exception("Asunto no encontrado");

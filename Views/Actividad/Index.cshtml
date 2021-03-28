@@ -44,13 +44,23 @@
                 @Html.DisplayFor(modelItem => item.id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.duracion)
+                @if(item.duracion < 60 ) {
+                    <span>@item.duracion sec</span>
+                } else {
+                    int minutes = item.duracion / 60;
+                    int seconds = item.duracion % 60;
+                    <span>@minutes m @seconds s</span>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.asuntoId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.asunto.estaResuelto)
+                @if(item.asunto.estaResuelto == true) {
+                    <span class="text-bold text-primary">RESUELTO</span>
+                } else {
+                    <span class="text-bold text-danger">NO RESUELTO</span>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.asunto.tipo)
