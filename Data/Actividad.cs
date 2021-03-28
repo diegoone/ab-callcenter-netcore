@@ -14,6 +14,7 @@ namespace supervisor_agente.Data
         public int duracion {get; set;}
         public int asuntoId {get; set;}
         public Asunto asunto {get; set;}
+        [Required]
         public string usuarioAppId {get; set;}
         public UsuarioApp usuarioApp {get; set;}
     }
