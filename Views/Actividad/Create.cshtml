@@ -16,11 +16,9 @@
                     <span asp-validation-for="asunto.id" class="text-danger"></span>
                 </div>
             </div>
-            
+            <div class="mb"><h2 class="h4 text-center">Nuevo asunto</h2></div>
             <div class="row mb">
-                <label class="control-label bg-white col-md-4 text-right">
-                    <button class="btn btn-default" type="button">Nuevo asunto</button>
-                </label>
+                <label class="control-label bg-white col-md-4 text-right">Motivo</label>
                 <div class="col-md-8">
                     <textarea asp-for="asunto.motivo" class="form-control" placeholder="Motivo o descripción"></textarea>
                     <span asp-validation-for="asunto.motivo" class="text-danger"></span>
@@ -67,16 +65,17 @@
             
             <div class="form-group row">
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-block btn-danger">Iniciar llamada</button>
+                    <button id='btn-llamada' data-status="NO_CALL" type="button" class="btn btn-block btn-danger">Iniciar llamada</button>
                 </div>
             </div>
             <div class="clock-group mb">
+                <input type="hidden" data-type="calculated" class="form-control"/>
                 <div class="clock-elem">
-                    <input type="text" class="form-control"/>
+                    <input type="text" data-type="minutes" class="form-control"/>
                 </div>
                 
                 <div class="clock-elem">
-                    <input type="text" class="form-control"/>
+                    <input type="text" data-type="seconds" class="form-control"/>
                 </div>
                 <div class="clock-elem">
                     <label class="control-label">min</label>
@@ -95,6 +94,58 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var clock = {
+            minutes: 0, 
+            seconds: 0,
+            calculated: 0, 
+            idInterval: null,
+            recalculate: function () {
+                var min = $('.clock-group input[data-type=minutes]').val();
+                this.minutes = parseInt(min);
+                var sec = $('.clock-group input[data-type=seconds]').val();
+                this.seconds = parseInt(sec);
+                $('.clock-group input[data-type=calculated]').val(this.seconds + this.minutes * 60);
+            },
+            init: function () {
+                $('.clock-group input[data-type=minutes]').val(this.minutes);
+                $('.clock-group input[data-type=seconds]').val(this.seconds);
+                $('.clock-group input[data-type=calculated]').val(this.seconds + this.minutes*60);
+            }, 
+            update: function () {
+                this.calculated += 1;
+                this.minutes = parseInt(this.calculated / 60);
+                this.seconds = this.calculated % 60;
+
+                $('.clock-group input[data-type=minutes]').val(this.minutes);
+                $('.clock-group input[data-type=seconds]').val(this.seconds);
+                $('.clock-group input[data-type=calculated]').val(this.seconds + this.minutes*60);
+            }
+        };
+        clock.init();
+        $('.clock-group input').on('input', function (e) {
+            clock.recalculate();
+        });
+        $('#btn-llamada').click(function () {
+            if(clock.idInterval === null) {
+               clock.idInterval = window.setInterval(function() {
+                    clock.update();
+                }, 1000);
+            } else {
+                window.clearInterval(clock.idInterval);
+                clock.idInterval = null;
+            }
+            var btnLlamada = $(this);
+            var estado = btnLlamada.attr('data-status');
+            if(estado==='ON_CALL') {
+                btnLlamada.text("Iniciar llamada");
+                btnLlamada.attr('data-status', 'NO_CALL');
+            } else {
+                btnLlamada.text("Finalizar llamada");
+                btnLlamada.attr('data-status', 'ON_CALL');
+            }
+        });
+    </script>
 }
 @section Styles {
 <style>
