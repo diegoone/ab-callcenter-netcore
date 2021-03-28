@@ -9,7 +9,7 @@ namespace supervisor_agente.Data
         //fecha hora a la que se recibió la llamada
         public DateTime fecha {get; set;}
 
-        public int correlativo {get; set;}
+        public int id {get; set;}
         //duracion en segundos
         public int duracion {get; set;}
         public int asuntoId {get; set;}
