@@ -43,7 +43,10 @@
             <div class="row mb">
                 <div class="checkbox col-md-4"></div>
                 <div class="checkbox col-md-8">
-                    <label><input asp-for="asunto.estaResuelto" type="checkbox" value="">Se resolvió el asunto</label>
+                    <label>
+                        <input asp-for="asunto.estaResuelto" type="checkbox">
+                        Se resolvió el asunto
+                        </label>
                 </div>
             </div>
         </div>
@@ -53,23 +56,19 @@
                 <label asp-for="fecha" class="control-label col-md-12">Fecha</label>
                 
                 <div class="col-md-6">
-                    <input asp-for="fecha" type="datetime-local" class="form-control" />
+                    <input asp-for="fecha" type="date" class="form-control" />
                     <span asp-validation-for="fecha" class="text-danger"></span>
                 </div>
 
             </div>
-            <div class="form-group">
-                <input id="duracion" asp-for="duracion"  type="hidden" class="form-control" />
-                <span asp-validation-for="duracion" class="text-danger"></span>
-            </div>
-            
+
             <div class="form-group row">
                 <div class="col-md-6">
                     <button id='btn-llamada' data-status="NO_CALL" type="button" class="btn btn-block btn-danger">Iniciar llamada</button>
                 </div>
             </div>
             <div class="clock-group mb">
-                <input type="hidden" data-type="calculated" class="form-control"/>
+                <input type="hidden" asp-for="duracion" data-type="calculated" class="form-control"/>
                 <div class="clock-elem">
                     <input type="text" data-type="minutes" class="form-control"/>
                 </div>
