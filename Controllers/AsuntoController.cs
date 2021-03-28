@@ -75,7 +75,7 @@ namespace supervisor_agente.Controllers
             var asunto = await _context.Asuntos.FindAsync(id);
             if (asunto == null)
             {
-                return NotFound();
+                return View(new Asunto());
             }
             return View(asunto);
         }

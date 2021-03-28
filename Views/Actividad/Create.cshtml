@@ -1,3 +1,4 @@
+@using supervisor_agente.Data
 @model supervisor_agente.Data.Actividad
 
 @{
@@ -12,45 +13,17 @@
             <div class="row mb">
                 <label class="control-label bg-white col-md-4 text-right">Buscar</label>
                 <div class="col-md-4">
-                    <input asp-for="asuntoId" type="text" placeholder="Id Asunto" class="form-control" />
+                    <input id="asuntoId" asp-for="asuntoId" type="text" placeholder="Id Asunto" class="form-control" />
                     <span asp-validation-for="asuntoId" class="text-danger"></span>
                 </div>
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-default">Buscar</button>
+                    <button type="button" id="btn-buscar-asunto" class="btn btn-default">Buscar</button>
                 </div>
             </div>
-            <div class="mb"><h2 class="h4 text-center">Nuevo asunto</h2></div>
-            <div class="row mb">
-                <label class="control-label bg-white col-md-4 text-right">Motivo</label>
-                <div class="col-md-8">
-                    <textarea asp-for="asunto.motivo" class="form-control" placeholder="Motivo o descripción"></textarea>
-                    <span asp-validation-for="asunto.motivo" class="text-danger"></span>
-                </div>
-            </div><!-- /input-group -->
-
-            <div class="row mb">
-                <label class="control-label bg-white col-md-4 text-right">Tipo</label>
-                <div class="col-md-8">
-                    <div class="radio">
-                        <label><input type="radio" asp-for="asunto.tipo" value="DUDA">DUDA</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" asp-for="asunto.tipo" value="CONSULTA">CONSULTA</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" asp-for="asunto.tipo" value="RECLAMO">RECLAMO</label>
-                    </div>
-                    <span asp-validation-for="asunto.tipo" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row mb">
-                <div class="checkbox col-md-4"></div>
-                <div class="checkbox col-md-8">
-                    <label>
-                        <input asp-for="asunto.estaResuelto" type="checkbox">
-                        Se resolvió el asunto
-                        </label>
-                </div>
+            <div id="asunto-partial">
+                @await Html.PartialAsync("/Views/Asunto/_PartialCreateOrEdit.cshtml", new Actividad {
+                    asunto = null
+                });
             </div>
         </div>
         <div class="col-md-4">
@@ -165,6 +138,15 @@
                 btnLlamada.text("Finalizar llamada");
                 btnLlamada.attr('data-status', 'ON_CALL');
             }
+        });
+        var btnBuscarAsunto = $("#btn-buscar-asunto");
+        btnBuscarAsunto.click(function () {
+            
+            var asuntoId = $("#asuntoId").val();
+            $.get("/Asunto/Edit/"+asuntoId, function (data) {
+                console.log(data);
+                $("#asunto-partial").html(data);
+            });
         });
     </script>
 }

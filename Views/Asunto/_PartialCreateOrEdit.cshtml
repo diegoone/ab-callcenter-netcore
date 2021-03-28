@@ -1,0 +1,40 @@
+@model supervisor_agente.Data.Actividad
+<div class="mb">
+        @if(Model.asunto == null) {
+            <h2 class="h4 text-center">Nuevo asunto</h2>
+        } else {
+            <h2 class="h4 text-center">Asunto existente</h2>
+        }
+</div>
+<div class="row mb">
+    <label class="control-label bg-white col-md-4 text-right">Motivo</label>
+    <div class="col-md-8">
+        <textarea asp-for="asunto.motivo" class="form-control" placeholder="Motivo o descripción"></textarea>
+        <span asp-validation-for="asunto.motivo" class="text-danger"></span>
+    </div>
+</div><!-- /input-group -->
+
+<div class="row mb">
+    <label class="control-label bg-white col-md-4 text-right">Tipo</label>
+    <div class="col-md-8">
+        <div class="radio">
+            <label><input type="radio" asp-for="asunto.tipo" value="DUDA">DUDA</label>
+        </div>
+        <div class="radio">
+            <label><input type="radio" asp-for="asunto.tipo" value="CONSULTA">CONSULTA</label>
+        </div>
+        <div class="radio">
+            <label><input type="radio" asp-for="asunto.tipo" value="RECLAMO">RECLAMO</label>
+        </div>
+        <span asp-validation-for="asunto.tipo" class="text-danger"></span>
+    </div>
+</div>
+<div class="row mb">
+    <div class="checkbox col-md-4"></div>
+    <div class="checkbox col-md-8">
+        <label>
+            <input asp-for="asunto.estaResuelto" type="checkbox">
+            Se resolvió el asunto
+        </label>
+    </div>
+</div>
