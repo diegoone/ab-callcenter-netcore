@@ -58,14 +58,23 @@ namespace supervisor_agente.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("fecha,correlativo,duracion,asuntoId,usuarioAppId")] Actividad actividad, 
+        public async Task<IActionResult> Create(
+        [Bind("fecha,correlativo,duracion,asuntoId,usuarioAppId,asunto.id,asunto.motivo,asunto.tipo,asunto.estaResuelto")] Actividad actividad, 
         [Bind("motivo,tipo,estaResuelto")] Asunto Asunto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(actividad);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var transaction = _context.Database.BeginTransaction();
+                try {
+                    _context.Add(actividad);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return RedirectToAction(nameof(Index));
+                }catch(Exception e) {
+                    transaction.Rollback();
+                    return BadRequest();
+                }
+                
             }
             ViewData["asuntoId"] = new SelectList(_context.Asuntos, "id", "id", actividad.asuntoId);
             ViewData["usuarioAppId"] = new SelectList(_context.UsuariosApp, "Id", "Id", actividad.usuarioAppId);
