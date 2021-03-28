@@ -15,6 +15,9 @@
                     <input asp-for="asuntoId" type="text" placeholder="Id Asunto" class="form-control" />
                     <span asp-validation-for="asuntoId" class="text-danger"></span>
                 </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-default">Buscar</button>
+                </div>
             </div>
             <div class="mb"><h2 class="h4 text-center">Nuevo asunto</h2></div>
             <div class="row mb">
@@ -99,26 +102,45 @@
             seconds: 0,
             calculated: 0, 
             idInterval: null,
+            toFormat0X: function(number) {
+                if(number>59) {
+                    throw { message: "Incompatible number" }
+                }
+                var dig1 = parseInt(number / 10);
+                var dig2 = number % 10;
+                console.log('dig1: '+dig1+', dig2: '+dig2);
+                if(dig1 > 0) {
+                    return dig1+''+dig2;
+                } else {
+                    return '0'+dig2;
+                }
+            }, 
             recalculate: function () {
-                var min = $('.clock-group input[data-type=minutes]').val();
+                var min = this.inputMinutes.val();
                 this.minutes = parseInt(min);
-                var sec = $('.clock-group input[data-type=seconds]').val();
+                var sec = this.inputSeconds.val();
                 this.seconds = parseInt(sec);
-                $('.clock-group input[data-type=calculated]').val(this.seconds + this.minutes * 60);
+                this.inputCalculated.val( this.seconds + this.minutes * 60 );
             },
             init: function () {
-                $('.clock-group input[data-type=minutes]').val(this.minutes);
-                $('.clock-group input[data-type=seconds]').val(this.seconds);
-                $('.clock-group input[data-type=calculated]').val(this.seconds + this.minutes*60);
+                //extraer los inputs
+                this.inputMinutes = $('.clock-group input[data-type=minutes]');
+                this.inputSeconds = $('.clock-group input[data-type=seconds]');
+                this.inputCalculated = $('.clock-group input[data-type=calculated]');
+                
+                //asignar valores
+                this.inputMinutes.val( this.toFormat0X(this.minutes) );
+                this.inputSeconds.val( this.toFormat0X(this.seconds) );
+                this.inputCalculated.val(this.seconds + this.minutes*60);
             }, 
             update: function () {
                 this.calculated += 1;
                 this.minutes = parseInt(this.calculated / 60);
                 this.seconds = this.calculated % 60;
 
-                $('.clock-group input[data-type=minutes]').val(this.minutes);
-                $('.clock-group input[data-type=seconds]').val(this.seconds);
-                $('.clock-group input[data-type=calculated]').val(this.seconds + this.minutes*60);
+                this.inputMinutes.val( this.toFormat0X(this.minutes) );
+                this.inputSeconds.val( this.toFormat0X(this.seconds) );
+                this.inputCalculated.val( this.seconds + this.minutes*60 );
             }
         };
         clock.init();
