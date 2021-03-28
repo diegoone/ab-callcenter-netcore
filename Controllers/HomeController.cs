@@ -33,7 +33,7 @@ namespace supervisor_agente.Controllers
             int count =_context.UsuariosApp.Count();
             //si contiene registros omitir este metodo
             if(count > 0) {
-                return RedirectToRoute("/");
+                return RedirectToAction("Index");
             }
             supervisor_agente.SeedData seedData = new SeedData();
             var transaction = _context.Database.BeginTransaction();
@@ -67,7 +67,7 @@ namespace supervisor_agente.Controllers
                 transaction.Rollback();
             }
 
-            return RedirectToRoute("/Home/");
+            return RedirectToAction("Index");
         }
         public IActionResult About()
         {

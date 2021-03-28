@@ -19,62 +19,47 @@ namespace supervisor_agente
             
             listSupervisores = new List<UsuarioApp>();
             listSupervisores.Add(new UsuarioApp {
-                Email = "supervisor@abcallcenter.com", 
-                UserName = "supervisor"
+                Email = "supervisor@abcallcenter.com"
             });
             
             listAgentes = new List<UsuarioApp>();
             
             listAgentes.Add(new UsuarioApp {
-                Email = "agente1@abcallcenter.com", 
-                UserName = "Agente1"
+                Email = "agente1@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente2@abcallcenter.com", 
-                UserName = "Agente2"
+                Email = "agente2@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente3@abcallcenter.com", 
-                UserName = "Agente3"
+                Email = "agente3@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente4@abcallcenter.com", 
-                UserName = "Agente4"
+                Email = "agente4@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente5@abcallcenter.com", 
-                UserName = "Agente5"
+                Email = "agente5@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente6@abcallcenter.com", 
-                UserName = "Agente6"
+                Email = "agente6@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente7@abcallcenter.com", 
-                UserName = "Agente7"
+                Email = "agente7@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente8@abcallcenter.com", 
-                UserName = "Agente8"
+                Email = "agente8@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente9@abcallcenter.com", 
-                UserName = "Agente9"
+                Email = "agente9@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente10@abcallcenter.com", 
-                UserName = "Agente10"
+                Email = "agente10@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente11@abcallcenter.com", 
-                UserName = "Agente11"
+                Email = "agente11@abcallcenter.com"
             });
             listAgentes.Add(new UsuarioApp {
-                Email = "agente12@abcallcenter.com", 
-                UserName = "Agente12"
+                Email = "agente12@abcallcenter.com"
             });
-            
         }
-        
     }
 }
