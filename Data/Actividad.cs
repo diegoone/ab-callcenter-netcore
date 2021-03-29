@@ -14,6 +14,9 @@ namespace supervisor_agente.Data
         //duracion en segundos
         public int duracion {get; set;}
         public int asuntoId {get; set;}
+        
+        //indica SI EN ESTA LLAMADA se resolvió el asunto
+        public bool estaResuelto {get; set;}
         public Asunto asunto {get; set;}
         [Required]
         [BindNever]
