@@ -21,7 +21,10 @@ namespace supervisor_agente.Controllers
         // GET: Asunto
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Asuntos.ToListAsync());
+            return View(await _context.Asuntos
+            .OrderBy( asu => asu.estaResuelto)
+            .ToListAsync
+            ());
         }
 
         // GET: Asunto/Details/5

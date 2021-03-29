@@ -4,11 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Lista de asuntos</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -34,12 +31,11 @@
                 @Html.DisplayFor(modelItem => item.tipo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.estaResuelto)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                @if(item.estaResuelto == true) {
+                    <span class="text-bold text-primary">RESUELTO</span>
+                } else {
+                    <span class="text-bold text-danger">NO RESUELTO</span>
+                }
             </td>
         </tr>
 }
