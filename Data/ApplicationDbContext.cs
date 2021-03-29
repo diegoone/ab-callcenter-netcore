@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using supervisor_agente.Consulta;
 
 namespace supervisor_agente.Data
 {
@@ -18,6 +19,7 @@ namespace supervisor_agente.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Query<ConsultaSemana>();
         }
     }
 }
