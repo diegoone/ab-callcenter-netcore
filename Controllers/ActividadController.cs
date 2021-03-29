@@ -28,10 +28,13 @@ namespace supervisor_agente.Controllers
         // GET: Actividad
         public async Task<IActionResult> Index()
         {
+            //nota se puede resetear los identity (auto incrementales) con: 
+            //DBCC CHECKIDENT (Asuntos, RESEED, 0)
             var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
             var applicationDbContext = _context.Actividades
             .Where( us => us.usuarioAppId == userId)
-            .Include(a => a.asunto);
+            .Include(a => a.asunto)
+            .OrderByDescending( a => a.fecha);
             return View(await applicationDbContext.ToListAsync());
         }
 
