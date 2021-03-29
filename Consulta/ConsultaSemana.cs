@@ -9,5 +9,7 @@ namespace supervisor_agente.Consulta
     {
         public int semana {get;set;}
         public int total {get;set;}
+        public int resueltos {get;set;}
+        public int noResueltos {get;set;}
     }
 }

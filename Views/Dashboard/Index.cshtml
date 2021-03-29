@@ -1,9 +1,55 @@
+@using System
+@using supervisor_agente.Consulta
+@model IEnumerable<supervisor_agente.Consulta.ConsultaSemana>
 @{
     ViewData["Title"] = "Home Page";
 }
+@{
+	/*
 <div style="width:90%;">
 	<canvas id="canvas"></canvas>
 </div>
+	*/
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                SEMANA #
+            </th>
+            <th>
+                Resueltas
+            </th>
+            <th>
+                No resueltas
+            </th>
+            <th>
+                Total
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.semana)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.resueltos)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.noResueltos)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.total)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+
 @section Scripts {
     <script src="/lib/chart.js/chart.min.js"></script>
     <script src="/lib/chart.js/util.js"></script>

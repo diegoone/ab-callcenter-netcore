@@ -31,36 +31,21 @@ namespace supervisor_agente.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            string sql =@"
+            string sql = @"
+
 select DATEPART(week, fecha) as semana, 
-count(*) as total
-from dbo.Actividades 
-where fecha >= '20210101' and fecha <= '20220101'
-group by DatePART(week, fecha)
-order by DatePart(week, fecha)
-            ";
-            var totalPorSemana = await _context.Query<ConsultaSemana>().FromSql(sql).ToListAsync();
-            sql = @"
-            select DATEPART(week, fecha) as semana, 
-count(*) as total
+count(*) as total, 
+    SUM(CASE WHEN estaResuelto = 'true' THEN 1 ELSE 0 END) as resueltos, 
+	SUM(CASE WHEN estaResuelto = 'false' THEN 1 ELSE 0 END) as noResueltos
 from dbo.Actividades 
 where fecha >= '20210101' and fecha <= '20220101' 
-and estaResuelto = 'true'
 group by DatePART(week, fecha)
 order by DatePart(week, fecha)
+
             ";
-            var totalPorSemanaResueltos = await _context.Query<ConsultaSemana>().FromSql(sql).ToListAsync();
-            sql = @"
-            select DATEPART(week, fecha) as semana, 
-count(*) as total
-from dbo.Actividades 
-where fecha >= '20210101' and fecha <= '20220101' 
-and estaResuelto = 'false'
-group by DatePART(week, fecha)
-order by DatePart(week, fecha)
-            ";
-            var totalPorSemanaNoResueltos = await _context.Query<ConsultaSemana>().FromSql(sql).ToListAsync();
-            return View();
+            var listaConsultaPorSemana = await _context.Query<ConsultaSemana>().FromSql(sql)
+            .ToListAsync();
+            return View(listaConsultaPorSemana);
         }
         public async Task<IActionResult> VerAgentes() {
             return null;
