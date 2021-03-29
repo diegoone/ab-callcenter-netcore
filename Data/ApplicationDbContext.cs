@@ -20,6 +20,7 @@ namespace supervisor_agente.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Query<ConsultaSemana>();
+            modelBuilder.Query<AgenteConsulta>();
         }
     }
 }

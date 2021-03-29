@@ -45,7 +45,45 @@ order by DatePart(week, fecha)
             ";
             var listaConsultaPorSemana = await _context.Query<ConsultaSemana>().FromSql(sql)
             .ToListAsync();
-            return View(listaConsultaPorSemana);
+
+            sql = @"
+select usu.*, anu.UserName from (
+	select u.Id as Id, count(*) as Total 
+	from AspNetUsers u
+	inner join Actividades a
+	on a.usuarioAppId = u.Id
+	group by u.Id
+	order by count(*) DESC
+	OFFSET  0 ROWS 
+	FETCH NEXT 3 ROWS ONLY 
+) as usu
+inner join AspNetUsers anu
+on anu.Id = usu.Id
+            ";
+            var listaAgenteMasLlamadas = await _context.Query<AgenteConsulta>().FromSql(sql)
+            .ToListAsync();
+            sql = @"
+select usu.*, anu.UserName from (
+	select u.Id as Id, count(*) as Total 
+	from AspNetUsers u
+	inner join Actividades a
+	on a.usuarioAppId = u.Id
+	group by u.Id
+	order by count(*) ASC
+	OFFSET  0 ROWS 
+	FETCH NEXT 3 ROWS ONLY 
+) as usu
+inner join AspNetUsers anu
+on anu.Id = usu.Id
+            ";
+            var listaAgenteMenosLlamadas = await _context.Query<AgenteConsulta>().FromSql(sql)
+            .ToListAsync();
+            ModeloConsulta modelo = new ModeloConsulta {
+                listaAgenteMasLlamadas = listaAgenteMasLlamadas, 
+                listaAgenteMenosLlamadas = listaAgenteMenosLlamadas, 
+                listaConsultaPorSemana = listaConsultaPorSemana
+            };
+            return View(modelo);
         }
         public async Task<IActionResult> VerAgentes() {
             return null;
