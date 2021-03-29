@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -27,17 +28,10 @@ namespace supervisor_agente.Controllers
         // GET: Actividad
         public async Task<IActionResult> Index()
         {
-            ViewData["role"] = User.Identity.Name;
-            var claims = User.Claims;
-            UsuarioApp u = await _context.UsuariosApp
-                .Where( us => us.UserName == User.Identity.Name)
-                .FirstOrDefaultAsync();
-            if(User.IsInRole("AGENTE")) {
-                ViewData["role"] = "AGENTE";
-            } else if ( User.IsInRole("SUPERVISOR") ) {
-                ViewData["role"] = "SUPERVISOR";
-            }
-            var applicationDbContext = _context.Actividades.Include(a => a.asunto);
+            var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationDbContext = _context.Actividades
+            .Where( us => us.usuarioAppId == userId)
+            .Include(a => a.asunto);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -75,13 +69,17 @@ namespace supervisor_agente.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-        [Bind("fecha,correlativo,duracion,asuntoId,usuarioAppId,asunto.id,asunto.motivo,asunto.tipo,asunto.estaResuelto")] Actividad actividad, 
+        [Bind("fecha,correlativo,duracion,asuntoId")] Actividad actividad, 
         [Bind("motivo,tipo,estaResuelto")] Asunto asunto)
         {
+            ModelState.Remove("usuarioAppId");
+            //TryValidateModel(actividad);
             if (ModelState.IsValid)
             {
                 var transaction = _context.Database.BeginTransaction();
                 try {
+                    var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    actividad.usuarioAppId = userId;
                     //ha proporcionado asuntoId por tanto simplemente registrar
                     if(asunto.id > 0) {
                         actividad.asuntoId = asunto.id;
@@ -111,6 +109,7 @@ namespace supervisor_agente.Controllers
                 }
                 
             }
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             ViewData["asuntoId"] = new SelectList(_context.Asuntos, "id", "id", actividad.asuntoId);
             ViewData["usuarioAppId"] = new SelectList(_context.UsuariosApp, "Id", "Id", actividad.usuarioAppId);
             return View(actividad);

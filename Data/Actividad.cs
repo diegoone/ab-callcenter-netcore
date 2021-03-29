@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace supervisor_agente.Data
 {
@@ -15,6 +16,7 @@ namespace supervisor_agente.Data
         public int asuntoId {get; set;}
         public Asunto asunto {get; set;}
         [Required]
+        [BindNever]
         public string usuarioAppId {get; set;}
         public UsuarioApp usuarioApp {get; set;}
     }
