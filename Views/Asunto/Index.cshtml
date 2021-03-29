@@ -6,9 +6,12 @@
 
 <h2>Lista de asuntos</h2>
 
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.motivo)
             </th>
@@ -24,6 +27,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.motivo)
             </td>

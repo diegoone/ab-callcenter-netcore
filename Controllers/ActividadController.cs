@@ -69,8 +69,8 @@ namespace supervisor_agente.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-        [Bind("fecha,correlativo,duracion,asuntoId")] Actividad actividad, 
-        [Bind("motivo,tipo,estaResuelto")] Asunto asunto)
+        [Bind("fecha,correlativo,duracion")] Actividad actividad, 
+        [Bind("id,motivo,tipo,estaResuelto")] Asunto asunto)
         {
             ModelState.Remove("usuarioAppId");
             //TryValidateModel(actividad);
@@ -91,11 +91,13 @@ namespace supervisor_agente.Controllers
                         //solo puede cambiar el motivo y puede marcarlo como resuelto
                         asuntoLocal.motivo = asunto.motivo;
                         asuntoLocal.estaResuelto = asunto.estaResuelto;
+                        actividad.estaResuelto = asunto.estaResuelto;
                         _context.Update(asuntoLocal);
                         _context.Add(actividad);
                     } else {
                         _context.Add(asunto);
                         await _context.SaveChangesAsync();
+                        actividad.estaResuelto = asunto.estaResuelto;
                         actividad.asuntoId = asunto.id;
                         _context.Add(actividad);
                     }

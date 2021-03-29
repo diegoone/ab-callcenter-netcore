@@ -4,12 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Lista de Actividades role: @ViewData["role"] </h2>
+<h2>Lista de Actividades</h2>
 
 <p>
     <a asp-action="Create">Nueva Actividad</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.asuntoId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.asunto.estaResuelto)
+                @Html.DisplayNameFor(model => model.estaResuelto)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.asunto.tipo)
@@ -56,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.asuntoId)
             </td>
             <td>
-                @if(item.asunto.estaResuelto == true) {
+                @if(item.estaResuelto == true) {
                     <span class="text-bold text-primary">RESUELTO</span>
                 } else {
                     <span class="text-bold text-danger">NO RESUELTO</span>

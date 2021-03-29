@@ -8,12 +8,13 @@
 <h2 class="text-center">Nueva Actividad</h2>
 <hr />
 <div class="row">
-    <form asp-action="Create">
+    <form id="form-actividad" asp-action="Create">
         <div class="col-md-6">
             <div class="row mb">
                 <label class="control-label bg-white col-md-4 text-right">Buscar</label>
                 <div class="col-md-4">
-                    <input id="asuntoId" asp-for="asunto.id" type="text" placeholder="Id Asunto" class="form-control" data-val=false/>
+                    <input id="asuntoId-buscar" min="1" type="text" placeholder="Id Asunto" class="form-control"/>
+                    <input id="asuntoId" asp-for="asunto.id" type="hidden"/>
                     <span asp-validation-for="asunto.id" class="text-danger"></span>
                 </div>
                 <div class="col-md-4">
@@ -142,11 +143,19 @@
         var btnBuscarAsunto = $("#btn-buscar-asunto");
         btnBuscarAsunto.click(function () {
             
-            var asuntoId = $("#asuntoId").val();
-            $.get("/Asunto/Edit/"+asuntoId, function (data) {
+            var asuntoIdBuscar = $("#asuntoId-buscar").val();
+            $.get("/Asunto/Edit/"+asuntoIdBuscar, function (data) {
                 console.log(data);
                 $("#asunto-partial").html(data);
             });
+        });
+        $("#form-actividad").submit(function () {
+            var inputAsuntoIdVisible = asuntoIdBuscar = parseInt($("#asuntoId-buscar").val());
+            if( Number.isInteger(inputAsuntoIdVisible)) {
+                $("#asuntoId").val(inputAsuntoIdVisible);
+            } else {
+                $("#asuntoId").val('0');
+            }
         });
     </script>
 }
