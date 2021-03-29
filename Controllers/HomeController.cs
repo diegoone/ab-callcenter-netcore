@@ -51,7 +51,10 @@ namespace supervisor_agente.Controllers
                     item.UserName = item.Email;
                     //usuario = item (objeto), password = password
                     await _userManager.CreateAsync(item, "Supervis0r_");
-                    await _userManager.AddToRoleAsync(item, "SUPERVISOR");
+                    IdentityResult result = await _userManager.AddToRoleAsync(item, "SUPERVISOR");
+                    if( !result.Succeeded) {
+                        throw new Exception("No se puedo agregar al usuario al rol");
+                    }
                 }
                 //agregar agentes
                 foreach (var item in seedData.listAgentes)
@@ -59,7 +62,10 @@ namespace supervisor_agente.Controllers
                     item.UserName = item.Email;
                     //usuario = item (objeto), password = agente
                     await _userManager.CreateAsync(item, "Agent3_");
-                    await _userManager.AddToRoleAsync(item, "AGENTE");
+                    IdentityResult result = await _userManager.AddToRoleAsync(item, "AGENTE");
+                    if( !result.Succeeded) {
+                        throw new Exception("No se puedo agregar al usuario al rol");
+                    }
                 }
                 await _context.SaveChangesAsync();
                 transaction.Commit();

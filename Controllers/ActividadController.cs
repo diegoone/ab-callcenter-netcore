@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,18 +11,32 @@ using supervisor_agente.Data;
 
 namespace supervisor_agente.Controllers
 {
+    [Authorize(Roles = "AGENTE")]
     public class ActividadController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ActividadController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        public ActividadController(ApplicationDbContext context, 
+        UserManager<IdentityUser> _userManager
+        )
         {
             _context = context;
+            this._userManager = _userManager;
         }
 
         // GET: Actividad
         public async Task<IActionResult> Index()
         {
+            ViewData["role"] = User.Identity.Name;
+            var claims = User.Claims;
+            UsuarioApp u = await _context.UsuariosApp
+                .Where( us => us.UserName == User.Identity.Name)
+                .FirstOrDefaultAsync();
+            if(User.IsInRole("AGENTE")) {
+                ViewData["role"] = "AGENTE";
+            } else if ( User.IsInRole("SUPERVISOR") ) {
+                ViewData["role"] = "SUPERVISOR";
+            }
             var applicationDbContext = _context.Actividades.Include(a => a.asunto);
             return View(await applicationDbContext.ToListAsync());
         }
